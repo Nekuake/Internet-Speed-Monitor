@@ -1,18 +1,18 @@
 # Script done by Nekuake using Sivel's speedtest.
 import time
 import decimal
+import os
 
 timessofar = (0)
 times = 0
 ping = 0
 download = 0
 upload = 0
-
+path= 0
 print("This script needs that you have installed previously the speedtest package.\n")
 print("Please, be sure that you have it first.\n")
 try:
     import speedtest
-
     print("Package found! Ready to run!")
     s = speedtest.Speedtest()  # Used
 except ImportError as e:  # Package not found, scipt shouldn't be run
@@ -29,9 +29,15 @@ kindoftestup = int(input("Test upload speed? (0/1)"))
 testping = int(input("Test ping? (0/1)"))
 while timessofar < times:
     if timessofar == 0:
+        print("DO NOT CLOSE THE WINDOW OR THE TEST WILL HALT!")
+        print("Connecting to the closest server...")
+        f = open("output","a")
         s.get_best_server()
     else:
+        print("Waiting",timeout," seconds...")
         time.sleep(timeout)
+    print("\n------------------------------------------------------------------------------------------------")
+    print("TEST NUMBER", timessofar,"/",times,":",kindoftestdown,kindoftestup,testping,timeout,times)
     timessofar = timessofar + 1
     if kindoftestdown == 1:
         print("Testing download speed...(", timessofar, ")/(" , times, ")")
@@ -52,8 +58,7 @@ while timessofar < times:
         upload = upload / 1024
         upload = round(upload)
         print("Upload Speed (", timessofar, "): ", upload, "KB/s. ", upload / 1024, "MB/s")
+        print("TEST FINISHED...")
+f.close
 print("Schelude completed. Check the output file.")
-# with open("Result.txt", "w") as  text_file:
-#   print= (s.download(), file = result.txt)
 
-#  time.sleep(timeout)
