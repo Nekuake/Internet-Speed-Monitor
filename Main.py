@@ -2,12 +2,7 @@
 import time
 import os
 
-timessofar = 0
-times = 0
-ping = 0
-download = 0
-upload = 0
-path = 0
+
 print("This script needs that you have installed previously the speedtest package.\n")
 print("Please, be sure that you have it first.\n")
 try:
@@ -31,6 +26,7 @@ if os.path.isfile("output.txt"):
     if remove == "Y":
         os.remove("output.txt")
 f = open("output.txt", "a")
+timessofar = 1
 while timessofar < times:
     if timessofar == 0:
         print("DO NOT CLOSE THE WINDOW OR THE TEST WILL HALT!")
@@ -75,3 +71,4 @@ while timessofar < times:
     print("TEST FINISHED...")
 f.close
 print("Schelude completed. Check the output file.")
+input()
