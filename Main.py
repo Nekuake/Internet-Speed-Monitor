@@ -1,14 +1,13 @@
 # Script done by Nekuake using Sivel's speedtest.
 import time
-import decimal
 import os
 
-timessofar = (0)
+timessofar = 0
 times = 0
 ping = 0
 download = 0
 upload = 0
-path= 0
+path = 0
 print("This script needs that you have installed previously the speedtest package.\n")
 print("Please, be sure that you have it first.\n")
 try:
@@ -27,28 +26,42 @@ timeout = int(input("How many seconds between every test: >> "))
 kindoftestdown = int(input("Test download speed? (0/1)"))
 kindoftestup = int(input("Test upload speed? (0/1)"))
 testping = int(input("Test ping? (0/1)"))
+if os.path.isfile("output.txt"):
+    remove = input("OLD OUTPUT FILE FOUND, DELETE IT?(Y or any other key) >> ").upper()
+    if remove == "Y":
+        os.remove("output.txt")
+f = open("output.txt", "a")
 while timessofar < times:
     if timessofar == 0:
         print("DO NOT CLOSE THE WINDOW OR THE TEST WILL HALT!")
         print("Connecting to the closest server...")
-        f = open("output","a")
+        print('TEST RUN AT: ', time.strftime("%c") + " with serial " + str(times) + str(kindoftestup) + str(kindoftestdown) + str(testping) + str(timeout))
+        f.write("\n" + "TEST RUN AT: " + time.strftime("%c") + "with serial" + str(times) + str(kindoftestup) + str(kindoftestdown) + str(testping) + str(timeout))
         s.get_best_server()
     else:
-        print("Waiting",timeout," seconds...")
+        print("Waiting", timeout, " seconds...")
         time.sleep(timeout)
+        f = open("output.txt", 'a')
+
     print("\n------------------------------------------------------------------------------------------------")
-    print("TEST NUMBER", timessofar,"/",times,":",kindoftestdown,kindoftestup,testping,timeout,times)
+    print("TEST NUMBER", timessofar, "/", times, ":", kindoftestdown, kindoftestup, testping, timeout, times, "at time", time.strftime("%c") )
+    f.write("\n" + "\n-----------------------------------------------------------" + "\nTEST NUMBER " + str(
+        timessofar) + "/" + str(times) + ": " + str(kindoftestdown) + str(kindoftestup) + str(testping) + str(
+        timeout) + str(times) + " at time " + time.strftime("%c"))
     timessofar = timessofar + 1
     if kindoftestdown == 1:
-        print("Testing download speed...(", timessofar, ")/(" , times, ")")
+        print("Testing download speed...(", timessofar, ")/(", times, ")")
         download = s.download()
         download = download / 1024
         download = round(download)
-        print("Download Speed (", timessofar, "): ", download, "KB/s. ", download/1024 , "MB/s")
+        print("Download Speed (", timessofar, "): ", download, "KB/s. ", download / 1024, "MB/s")
+        f.write("\nDownload Speed ("+ str(timessofar)+ "): "+ str(download) + "KB/s. "+ str(download / 1024)+ "MB/s")
     if testping == 1:
         print("Testing ping...(", timessofar, ")")
         ping = s.lat_lon
-        print(ping)
+        print("Ping:" , ping)
+        f.write("\nPing:" + str(ping))
+
     if kindoftestup == 1:
         print("Testing upload speed...(", timessofar, ")")
         if memorypreallocation == "Y":
@@ -58,7 +71,7 @@ while timessofar < times:
         upload = upload / 1024
         upload = round(upload)
         print("Upload Speed (", timessofar, "): ", upload, "KB/s. ", upload / 1024, "MB/s")
-        print("TEST FINISHED...")
+        f.write("\nUpload Speed (" + str(timessofar) + "): " + str(upload) + "KB/s. " + str(upload / 1024) + "MB/s")
+    print("TEST FINISHED...")
 f.close
 print("Schelude completed. Check the output file.")
-
