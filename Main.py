@@ -27,8 +27,8 @@ if os.path.isfile("output.txt"):
         os.remove("output.txt")
 f = open("output.txt", "a")
 timessofar = 1
-while timessofar < times:
-    if timessofar == 0:
+while timessofar <= times:
+    if timessofar == 1:
         print("DO NOT CLOSE THE WINDOW OR THE TEST WILL HALT!")
         print("Connecting to the closest server...")
         print('TEST RUN AT: ', time.strftime("%c") + " with serial " + str(times) + str(kindoftestup) + str(kindoftestdown) + str(testping) + str(timeout))
