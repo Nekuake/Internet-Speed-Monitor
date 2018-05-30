@@ -25,26 +25,23 @@ if os.path.isfile("output.txt"):
     remove = input("OLD OUTPUT FILE FOUND, DELETE IT?(Y or any other key) >> ").upper()
     if remove == "Y":
         os.remove("output.txt")
-f = open("output.txt", "a")
 timessofar = 1
 while timessofar <= times:
+    f = open("output.txt", "a")
     if timessofar == 1:
         print("DO NOT CLOSE THE WINDOW OR THE TEST WILL HALT!")
         print("Connecting to the closest server...")
+        print("USING SERVER:\n" , s.get_best_server())
         print('TEST RUN AT: ', time.strftime("%c") + " with serial " + str(times) + str(kindoftestup) + str(kindoftestdown) + str(testping) + str(timeout))
         f.write("\n" + "TEST RUN AT: " + time.strftime("%c") + "with serial" + str(times) + str(kindoftestup) + str(kindoftestdown) + str(testping) + str(timeout))
-        s.get_best_server()
     else:
         print("Waiting", timeout, " seconds...")
         time.sleep(timeout)
-        f = open("output.txt", 'a')
-
     print("\n------------------------------------------------------------------------------------------------")
     print("TEST NUMBER", timessofar, "/", times, ":", kindoftestdown, kindoftestup, testping, timeout, times, "at time", time.strftime("%c") )
     f.write("\n" + "\n-----------------------------------------------------------" + "\nTEST NUMBER " + str(
         timessofar) + "/" + str(times) + ": " + str(kindoftestdown) + str(kindoftestup) + str(testping) + str(
         timeout) + str(times) + " at time " + time.strftime("%c"))
-    timessofar = timessofar + 1
     if kindoftestdown == 1:
         print("Testing download speed...(", timessofar, ")/(", times, ")")
         download = s.download()
@@ -57,7 +54,6 @@ while timessofar <= times:
         ping = s.lat_lon
         print("Ping:" , ping)
         f.write("\nPing:" + str(ping))
-
     if kindoftestup == 1:
         print("Testing upload speed...(", timessofar, ")")
         if memorypreallocation == "Y":
@@ -69,6 +65,7 @@ while timessofar <= times:
         print("Upload Speed (", timessofar, "): ", upload, "KB/s. ", upload / 1024, "MB/s")
         f.write("\nUpload Speed (" + str(timessofar) + "): " + str(upload) + "KB/s. " + str(upload / 1024) + "MB/s")
     print("TEST FINISHED...")
-f.close
+    timessofar = timessofar + 1
+    f.close
 print("Schelude completed. Check the output file.")
 input()
