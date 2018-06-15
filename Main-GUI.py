@@ -17,6 +17,7 @@ mainwindow.tk.call('tk', 'scaling', 2.0)
 mainwindow.geometry('500x300')
 mainwindow.configure(bg="#F0F0F0")
 mainwindow.title("Internet Speed Monitor")
+
 download = "0"
 upload = "0"
 ping = "0"
@@ -37,9 +38,6 @@ times.grid(row=4, column=1, sticky=NW)
 Label(mainwindow, text="Seconds").grid(row=4, column=2, sticky=NW)
 timeout = Spinbox(mainwindow, width=10, from_=1, to=9999)
 timeout.grid(row=4, column=3, sticky=NW)
-Label(mainwindow, textvariable=download).grid(row=1, column=0, sticky=NW)
-Label(mainwindow, textvariable=upload).grid(row=1, column=1, sticky=NW)
-Label(mainwindow, textvariable=ping).grid(row=1, column=2, sticky=NW)
 if status == 0:
     Label(mainwindow, text="OK. Waiting conf.", fg="green").grid(row=5, column=0)
 elif status == -1:
@@ -55,10 +53,19 @@ def test():
     timesdef = int(times.get())
     timeoutdef = int(timeout.get())
     timessofar = 1
-    status = 1
+    kindoftestpingdef=kindoftestping.get()
+    kindoftestdowndef=kindoftestdown.get()
+    kindoftestupdef=kindoftestup.get()
+    resultwindow = Tk()
+    resultwindow.tk.call('tk', 'scaling', 2.0)
+    resultwindow.geometry('500x300')
+    resultwindow.configure(bg="#F0F0F0")
+    resultwindow.title("Internet Speed Monitor-Results")
+    resultwindow.mainloop()
     while timessofar <= timesdef:
         f = open("outputgui.txt", "a")
         if timessofar == 1:
+            s.get_best_server()
             print(
                 "\n" + "TEST RUN AT: " + time.strftime("%c") + "with serial" + str(timesdef) + str(kindoftestup) + str(
                     kindoftestdown) + str(kindoftestping) + str(timeoutdef))
@@ -71,16 +78,17 @@ def test():
         f.write("\n" + "\n-----------------------------------------------------------" + "\nTEST NUMBER " + str(
             timessofar) + "/" + str(times) + ": " + str(kindoftestdown) + str(kindoftestup) + str(kindoftestping) + str(
             timeout) + str(times) + " at time " + time.strftime("%c"))
-        if kindoftestdown == 1:
+        if kindoftestdowndef == 1:
             download = s.download()
             download = download / 1024
             download = round(download)
             f.write("\nDownload Speed (" + str(timessofar) + "): " + str(download) + "KB/s. " + str(
                 download / 1024) + "MB/s")
-        if kindoftestping == 1:
+        if kindoftestpingdef == 1:
             ping = s.lat_lon
             f.write("\nPing:" + str(ping))
-        if kindoftestup == 1:
+            print("\nPing:" + str(ping))
+        if kindoftestupdef == 1:
             if memorypreallocation == "Y":
                 upload = s.upload(pre_allocate=False)
             elif memorypreallocation != "Y":
