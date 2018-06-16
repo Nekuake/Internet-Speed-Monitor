@@ -42,7 +42,7 @@ def test():
     resultwindow.geometry('500x300')
     resultwindow.configure(bg="#F0F0F0")
     resultwindow.title("Internet Speed Monitor-Results")
-    Label(mainwindow, text="Results").grid(row=0, column=0, sticky=NW)
+    Label(resultwindow, text="Results").grid(row=0, column=0, sticky=NW)
     resultwindow.update()
     while timessofar <= timesdef:
         f = open("outputgui.txt", "a")
