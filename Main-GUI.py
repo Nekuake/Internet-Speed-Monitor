@@ -3,7 +3,7 @@ import time
 import threading
 from tkinter import *
 from tkinter.ttk import *
-from tkinter import messagebox
+import os
 try:
     import speedtest
 
@@ -17,7 +17,6 @@ upload = 0
 ping = 0
 timewaited = 0
 timessofar = 0
-running = 0
 mainwindow = Tk()
 mainwindow.tk.call('tk', 'scaling', 2.0)
 mainwindow.geometry('550x120')
@@ -28,6 +27,8 @@ kindoftestdown = IntVar()
 kindoftestup = IntVar()
 kindoftestping = IntVar()
 memorypreallocation = IntVar()
+deletefile= IntVar()
+
 
 guidownloadcheck = Checkbutton(mainwindow, text="Download", variable=kindoftestdown)
 guidownloadcheck.grid(row=3, column=0, sticky=NW)
@@ -35,6 +36,8 @@ guiuploadcheck = Checkbutton(mainwindow, text="Upload", variable=kindoftestup).g
 guipingcheck = Checkbutton(mainwindow, text="Ping", variable=kindoftestping).grid(row=3, column=2, sticky=NW)
 guiprealloccheck = Checkbutton(mainwindow, text="Disable Mem. preallocation.", variable=memorypreallocation).grid(row=3, column=3,
                                                                                                sticky=SW)
+if os.path.isfile("outputgui.txt"):
+    guideletefile = Checkbutton(mainwindow,text="Delete old log file?", variable=deletefile).grid(row=5,column = 1)
 Label(mainwindow, text="Nº of tests").grid(row=4, column=0, sticky=NW)
 
 times = Spinbox(mainwindow, width=10, from_=1, to=9999)
@@ -45,18 +48,18 @@ timeout.grid(row=4, column=3, sticky=NW)
 
 
 def test():
-    global running
-    if running ==0:
-        running = 1
-        print("Starting test function...")
-        timesdef = int(times.get())
-        timeoutdef = int(timeout.get())
-        timessofar = 1
-        timewaited = 0
-        kindoftestpingdef = kindoftestping.get()
-        kindoftestdowndef = kindoftestdown.get()
-        kindoftestupdef = kindoftestup.get()
-        while timessofar <= timesdef:
+    global guirun
+    print("Starting test function...")
+    timesdef = int(times.get())
+    timeoutdef = int(timeout.get())
+    timessofar = 1
+    timewaited = 0
+    kindoftestpingdef = kindoftestping.get()
+    kindoftestdowndef = kindoftestdown.get()
+    kindoftestupdef = kindoftestup.get()
+    if deletefile.get() == 1:
+        os.remove("outputgui.txt")
+    while timessofar <= timesdef:
             f = open("outputgui.txt", "a")
             if timessofar == 1:
                 print("Getting best server...")
@@ -76,8 +79,8 @@ def test():
                     time.sleep(1)
                     timewaited = timewaited + 1
             f.write("\n" + "\n-----------------------------------------------------------" + "\nTEST NUMBER " + str(
-                timessofar) + "/" + str(times) + ": " + str(kindoftestdown) + str(kindoftestup) + str(kindoftestping) + str(
-                timeout) + str(times) + " at time " + time.strftime("%c"))
+                timessofar) + "/" + str(timesdef) + ": " + str(kindoftestdowndef) + str(kindoftestupdef) + str(kindoftestpingdef) + str(
+                timeoutdef) + str(timesdef) + " at time " + time.strftime("%c"))
             if kindoftestdowndef == 1:
                 download = s.download()
                 download = download / 1024
@@ -105,11 +108,10 @@ def test():
 
             timessofar = timessofar + 1
 
-            print(round((timessofar/timesdef)*100))
             f.close
             timewaited = 0
-    else:
-        messagebox.showinfo("Internet Speed Monitor Info", "Just one thread is allowed.")
+    guirun.configure(state = NORMAL)
+
 
 testthread = threading.Thread(target = test)
 guirun = Button(mainwindow, text="Run", command=lambda: [testthread.start(), guirun.configure(state = DISABLED)])
