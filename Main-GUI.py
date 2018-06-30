@@ -3,6 +3,7 @@ import time
 import threading
 from tkinter import *
 from tkinter.ttk import *
+from tkinter import messagebox
 try:
     import speedtest
 
@@ -107,9 +108,10 @@ def test():
             print(round((timessofar/timesdef)*100))
             f.close
             timewaited = 0
+    else:
+        messagebox.showinfo("Internet Speed Monitor Info", "Just one thread is allowed.")
 
-
-
-guirun = Button(mainwindow, text="Run", command=lambda: [threading.start_new_thread(test())])
+testthread = threading.Thread(target = test)
+guirun = Button(mainwindow, text="Run", command=lambda: [testthread.start(), guirun.configure(state = DISABLED)])
 guirun.grid(row=5, column=0, sticky=NW)
 mainwindow.mainloop()
