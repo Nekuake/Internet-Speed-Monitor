@@ -17,9 +17,10 @@ upload = 0
 ping = 0
 timewaited = 0
 timessofar = 0
+attemps = 0
 mainwindow = Tk()
 mainwindow.tk.call('tk', 'scaling', 2.0)
-mainwindow.geometry('550x120')
+mainwindow.geometry('570x120')
 mainwindow.configure(bg="#F0F0F0")
 mainwindow.title("Internet Speed Monitor")
 
@@ -37,7 +38,7 @@ guipingcheck = Checkbutton(mainwindow, text="Ping", variable=kindoftestping).gri
 guiprealloccheck = Checkbutton(mainwindow, text="Disable Mem. preallocation.", variable=memorypreallocation).grid(row=3, column=3,
                                                                                                sticky=SW)
 if os.path.isfile("outputgui.txt"):
-    guideletefile = Checkbutton(mainwindow,text="Delete old log file?", variable=deletefile).grid(row=5,column = 1)
+    guideletefile = Checkbutton(mainwindow,text="Delete old file", variable=deletefile).grid(row=5,column = 1)
 Label(mainwindow, text="Nº of tests").grid(row=4, column=0, sticky=NW)
 
 times = Spinbox(mainwindow, width=10, from_=1, to=9999)
@@ -48,7 +49,8 @@ timeout.grid(row=4, column=3, sticky=NW)
 
 
 def test():
-    global guirun
+    global guirun, mainwindow, testthread
+    mainwindow.configure(bg="#f2f4a6")
     print("Starting test function...")
     timesdef = int(times.get())
     timeoutdef = int(timeout.get())
@@ -111,9 +113,19 @@ def test():
             f.close
             timewaited = 0
     guirun.configure(state = NORMAL)
+    mainwindow.configure(bg="#F0F0F0")
+    sys.exit(0)
 
 
-testthread = threading.Thread(target = test)
-guirun = Button(mainwindow, text="Run", command=lambda: [testthread.start(), guirun.configure(state = DISABLED)])
+testthread = [threading.Thread(target=test)]
+
+def init_thread():
+    global attemps, testthread
+    attemps = attemps + 1
+    testthread.insert (attemps,threading.Thread(target=test))
+    testthread[attemps].start()
+
+
+guirun = Button(mainwindow, text="Run", command=lambda: [init_thread(), guirun.configure(state = DISABLED)])
 guirun.grid(row=5, column=0, sticky=NW)
 mainwindow.mainloop()
