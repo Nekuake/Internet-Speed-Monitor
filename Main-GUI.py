@@ -41,7 +41,7 @@ if os.path.isfile("outputgui.txt"):
 Label(mainwindow, text="Nº of tests").grid(row=4, column=0, sticky=NW)
 
 status =Label(mainwindow, text="Waiting for input...")
-status.grid(row=6, column=0, sticky=NW,columnspan=3)
+status.grid(row=6, column=0, sticky=NW,columnspan=5)
 
 
 times = Spinbox(mainwindow, width=10, from_=1, to=9999)
@@ -67,12 +67,13 @@ mainwindow.protocol("WM_DELETE_WINDOW", closing)
 
 globalprogressbar = Progressbar(mainwindow, length=100, mode='determinate', maximum=100)
 globalprogressbar.grid(row=6, column = 0,columnspan = 2)
-globalprogressbar.place(width=770,height=9)
+globalprogressbar.place(width=800,height=9)
 
 def test():
     global guirun, mainwindow, testthread, uploadgui, downloadgui, pinggui, timesdef, globalprogressbar, status, running,globalprogressbar
     mainwindow.configure(bg="#f2f4a6")
     print("Starting test function...")
+    status.configure(text="Starting test function...")
     running = 1
     timesdef = int(times.get())
     timeoutdef = int(timeout.get())
@@ -98,15 +99,17 @@ def test():
                     kindoftestupdef) + str(
                     kindoftestdowndef) + str(kindoftestpingdef) + str(timeoutdef))
             else:
-                print("Waiting", str(timeout), " seconds...")
-
-                while timewaited != timeoutdef:
+                print("Waiting", str(timeoutdef), " seconds...")
+                while timewaited != 0:
                     time.sleep(1)
-                    timewaited = timewaited + 1
+                    timewaited = timewaited - 1
+                    status.configure(text="Waiting " + str(timewaited) + " seconds...("+str(timessofar)+"/"+str(timesdef)+")")
+
             f.write("\n" + "\n-----------------------------------------------------------" + "\nTEST NUMBER " + str(
                 timessofar) + "/" + str(timesdef) + ": " + str(kindoftestdowndef) + str(kindoftestupdef) + str(kindoftestpingdef) + str(
                 timeoutdef) + str(timesdef) + " at time " + time.strftime("%c"))
             if kindoftestdowndef == 1:
+                status.configure(text="Testing download speed...("+str(timessofar)+"/"+str(timesdef)+")")
                 download = s.download()
                 download = download / 1024
                 download = round(download)
@@ -116,6 +119,7 @@ def test():
                 globalprogressbar.step(1)
 
             if kindoftestpingdef == 1:
+                status.configure(text="Testing ping...("+str(timessofar)+"/"+str(timesdef)+")")
                 ping = s.lat_lon
                 f.write("\nPing:" + str(ping))
                 print("\nPing:" + str(ping))
@@ -123,6 +127,7 @@ def test():
                 globalprogressbar.step(1)
 
             if kindoftestupdef == 1:
+                status.configure(text="Testing upload speed...("+str(timessofar)+"/"+str(timesdef)+")")
                 if memorypreallocation == "Y":
                     upload = s.upload(pre_allocate=False)
                 elif memorypreallocation != "Y":
@@ -136,10 +141,11 @@ def test():
 
             timessofar = timessofar + 1
             f.close
-            timewaited = 0
+            timewaited = timeoutdef
 
     guirun.configure(state = NORMAL)
     running = 0
+    status.configure(text="Finished. Waiting for input... (check outputgui.txt)")
     mainwindow.configure(bg="#F0F0F0")
 
 
