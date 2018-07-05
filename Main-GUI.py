@@ -82,6 +82,7 @@ def test():
     kindoftestpingdef = kindoftestping.get()
     kindoftestdowndef = kindoftestdown.get()
     kindoftestupdef = kindoftestup.get()
+    portion = (100/(timesdef*(kindoftestupdef+kindoftestdowndef+kindoftestpingdef)))
     if deletefile.get() == 1:
         os.remove("outputgui.txt")
     while timessofar <= timesdef:
@@ -116,7 +117,7 @@ def test():
                 f.write("\nDownload Speed (" + str(timessofar) + "): " + str(download) + "KB/s. " + str(
                     download / 1024) + "MB/s")
                 downloadgui.configure(text="Download Speed: " + str(download) + " KB/s.")
-                globalprogressbar.step(1)
+                globalprogressbar.step(portion)
 
             if kindoftestpingdef == 1:
                 status.configure(text="Testing ping...("+str(timessofar)+"/"+str(timesdef)+")")
@@ -124,7 +125,7 @@ def test():
                 f.write("\nPing:" + str(ping))
                 print("\nPing:" + str(ping))
                 pinggui.configure(text="Ping: " + str(ping))
-                globalprogressbar.step(1)
+                globalprogressbar.step(portion)
 
             if kindoftestupdef == 1:
                 status.configure(text="Testing upload speed...("+str(timessofar)+"/"+str(timesdef)+")")
@@ -137,7 +138,7 @@ def test():
                 print("\nUpload Speed (" + str(timessofar) + "): " + str(upload) + "KB/s. " + str(upload / 1024) + "MB/s")
                 f.write("\nUpload Speed (" + str(timessofar) + "): " + str(upload) + "KB/s. " + str(upload / 1024) + "MB/s")
                 uploadgui.configure(text="Upload Speed: " + str(upload) + " KB/s.")
-                globalprogressbar.step(1)
+                globalprogressbar.step(portion)
 
             timessofar = timessofar + 1
             f.close
