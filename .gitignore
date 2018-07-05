@@ -6,3 +6,5 @@ output
 output\.txt
 
 outputgui\.txt
+
+__pycache__/
