@@ -4,6 +4,7 @@ import threading
 from tkinter import *
 from tkinter.ttk import *
 from tkinter import messagebox
+from ttkthemes import ThemedStyle
 import os
 import speedtest
 print("Package found! Ready to run!")
@@ -22,10 +23,11 @@ infinitesting=0
 mainwindow = Tk()
 mainwindow.tk.call('tk', 'scaling', 2.0)
 mainwindow.geometry('800x120')
-mainwindow.configure(bg="#F0F0F0")
 mainwindow.title("Internet Speed Monitor")
 mainwindow.resizable(0,0)
-
+insertstyle = ThemedStyle(mainwindow)
+insertstyle.set_theme("black")
+mainwindow.configure(bg="#414244")
 kindoftestdown = IntVar()
 kindoftestup = IntVar()
 kindoftestping = IntVar()
