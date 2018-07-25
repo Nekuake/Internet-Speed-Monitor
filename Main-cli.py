@@ -26,6 +26,9 @@ if os.path.isfile("output.txt"):
     if remove == "Y":
         os.remove("output.txt")
 timessofar = 1
+if timeout == 0:
+    timeout = 1
+    print("TIMEOUT MUST BE 1 SECOND AT LEAST...")
 while timessofar <= times:
     f = open("output.txt", "a")
     if timessofar == 1:
