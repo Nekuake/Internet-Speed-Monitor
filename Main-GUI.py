@@ -4,6 +4,7 @@ import threading
 from tkinter import *
 from tkinter.ttk import *
 from tkinter import messagebox
+from ttkthemes import ThemedStyle
 import os
 import speedtest
 print("Package found! Ready to run!")
@@ -17,20 +18,24 @@ timessofar = 0
 attemps = 0
 timesdef = 0
 running=0
+infinitesting=0
+
 mainwindow = Tk()
 mainwindow.tk.call('tk', 'scaling', 2.0)
 mainwindow.geometry('800x120')
-mainwindow.configure(bg="#F0F0F0")
 mainwindow.title("Internet Speed Monitor")
 mainwindow.resizable(0,0)
-
+insertstyle = ThemedStyle(mainwindow)
+insertstyle.set_theme("black")
+mainwindow.configure(bg="#414244")
 kindoftestdown = IntVar()
 kindoftestup = IntVar()
 kindoftestping = IntVar()
 memorypreallocation = IntVar()
 deletefile= IntVar()
 
-
+guiinfinitesting = Checkbutton(mainwindow, text="Infinite", variable=infinitesting, command=lambda:[infcheck()])
+guiinfinitesting.grid(row=3,column=4)
 guidownloadcheck = Checkbutton(mainwindow, text="Download", variable=kindoftestdown)
 guidownloadcheck.grid(row=3, column=0, sticky=NW)
 guiuploadcheck = Checkbutton(mainwindow, text="Upload", variable=kindoftestup).grid(row=3, column=1, sticky=NW)
@@ -44,10 +49,10 @@ status =Label(mainwindow, text="Waiting for input...")
 status.grid(row=6, column=0, sticky=NW,columnspan=5)
 
 
-times = Spinbox(mainwindow, width=10, from_=1, to=9999)
+times = Spinbox(mainwindow, width=10, from_=1, to=9999, state = 'readonly')
 times.grid(row=4, column=1, sticky=NW)
 Label(mainwindow, text="Seconds").grid(row=4, column=2, sticky=NW)
-timeout = Spinbox(mainwindow, width=10, from_=1, to=9999)
+timeout = Spinbox(mainwindow, width=10, from_=1, to=9999, state = 'readonly')
 timeout.grid(row=4, column=3, sticky=NW)
 downloadgui = Label(mainwindow, text="0 MB/s")
 downloadgui.grid(row = 3, column = 4, sticky=SE)
@@ -64,6 +69,14 @@ def closing():
     exit()
 
 mainwindow.protocol("WM_DELETE_WINDOW", closing)
+
+
+def infcheck():
+    global infinitesting, guiinfinitesting, times
+    if infinitesting == 1:
+        times.config(state= DISABLED)
+    else:
+        times.config(state= NORMAL)
 
 globalprogressbar = Progressbar(mainwindow, length=100, mode='determinate', maximum=100)
 globalprogressbar.grid(row=6, column = 0,columnspan = 2)

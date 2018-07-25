@@ -8,3 +8,9 @@ output\.txt
 outputgui\.txt
 
 __pycache__/
+
+build/Main-CLI/
+
+build/Main-GUI/
+
+*.spec
