@@ -21,7 +21,7 @@ running=0
 infinitesting=0
 
 mainwindow = Tk()
-mainwindow.tk.call('tk', 'scaling', 2.0)
+mainwindow.tk.call('tk', 'scaling', 1.7)
 mainwindow.geometry('800x120')
 mainwindow.title("Internet Speed Monitor")
 mainwindow.resizable(0,0)
@@ -84,7 +84,6 @@ globalprogressbar.place(width=800,height=9)
 
 def test():
     global guirun, mainwindow, testthread, uploadgui, downloadgui, pinggui, timesdef, globalprogressbar, status, running,globalprogressbar
-    mainwindow.configure(bg="#f2f4a6")
     print("Starting test function...")
     status.configure(text="Starting test function...")
     running = 1
@@ -160,7 +159,6 @@ def test():
     guirun.configure(state = NORMAL)
     running = 0
     status.configure(text="Finished. Waiting for input... (check outputgui.txt)")
-    mainwindow.configure(bg="#F0F0F0")
 
 
 testthread = [threading.Thread(target=test)]
