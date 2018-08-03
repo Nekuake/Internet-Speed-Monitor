@@ -1,1 +1,4 @@
 speedtest
+tkinter
+tkinter.ttk
+ttkthemes
