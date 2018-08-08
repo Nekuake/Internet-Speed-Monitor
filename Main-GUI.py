@@ -7,6 +7,7 @@ from tkinter import messagebox
 from ttkthemes import ThemedStyle
 import os
 import speedtest
+import math
 print("Package found! Ready to run!")
 s = speedtest.Speedtest()  # Used
 
@@ -18,7 +19,7 @@ timessofar = 0
 attemps = 0
 timesdef = 0
 running=0
-infinitesting=0
+
 
 mainwindow = Tk()
 mainwindow.tk.call('tk', 'scaling', 1.7)
@@ -33,9 +34,10 @@ kindoftestup = IntVar()
 kindoftestping = IntVar()
 memorypreallocation = IntVar()
 deletefile= IntVar()
+infinitesting=IntVar()
 
-guiinfinitesting = Checkbutton(mainwindow, text="Infinite", variable=infinitesting, command=lambda:[infcheck()])
-guiinfinitesting.grid(row=3,column=4)
+guiinfinitesting = Checkbutton(mainwindow, text="Infinite", variable=infinitesting)
+guiinfinitesting.grid(row=3,column=4,sticky=W)
 guidownloadcheck = Checkbutton(mainwindow, text="Download", variable=kindoftestdown)
 guidownloadcheck.grid(row=3, column=0, sticky=NW)
 guiuploadcheck = Checkbutton(mainwindow, text="Upload", variable=kindoftestup).grid(row=3, column=1, sticky=NW)
@@ -71,24 +73,23 @@ def closing():
 mainwindow.protocol("WM_DELETE_WINDOW", closing)
 
 
-def infcheck():
-    global infinitesting, guiinfinitesting, times
-    if infinitesting == 1:
-        times.config(state= DISABLED)
-    else:
-        times.config(state= NORMAL)
 
 globalprogressbar = Progressbar(mainwindow, length=100, mode='determinate', maximum=100)
 globalprogressbar.grid(row=6, column = 0,columnspan = 2)
-globalprogressbar.place(width=800,height=9)
+globalprogressbar.place(width=800,height=9,y=111 )
 
 def test():
-    global guirun, mainwindow, testthread, uploadgui, downloadgui, pinggui, timesdef, globalprogressbar, status, running,globalprogressbar
+    global guirun, mainwindow, testthread, uploadgui, downloadgui, pinggui, timesdef, globalprogressbar, status, running,globalprogressbar, infinitesting
     print("Starting test function...")
     status.configure(text="Starting test function...")
+    print(infinitesting)
+    infinitestingdef = infinitesting.get()
+    print (infinitestingdef)
     running = 1
     timesdef = int(times.get())
     timeoutdef = int(timeout.get())
+    if infinitestingdef == 1:
+        timesdef = math.inf
     timessofar = 1
     timewaited = 0
     kindoftestpingdef = kindoftestping.get()

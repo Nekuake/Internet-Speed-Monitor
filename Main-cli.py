@@ -1,7 +1,7 @@
 # Script done by Nekuake using Sivel's speedtest.
 import time
 import os
-
+import math
 
 print("This script needs that you have installed previously the speedtest package.\n")
 print("Please, be sure that you have it first.\n")
@@ -16,7 +16,11 @@ except ImportError as e:  # Package not found, scipt shouldn't be run
 print("If you have MemoryError, you should answer yes. Otherwise, just press enter: \n")
 memorypreallocation = input("Disable memory preallocation? (press enter= no/ press Y = yes) >> ").upper()
 print("Set the values:")
-times = int(input("Number of times: >> "))
+infinitesting = int(input("Infinite testing?(0/1) >>"))
+if infinitesting == 1:
+    times = math.inf
+else:
+    times = int(input("Number of times: >> "))
 timeout = int(input("How many seconds between every test: >> "))
 kindoftestdown = int(input("Test download speed? (0/1)"))
 kindoftestup = int(input("Test upload speed? (0/1)"))
