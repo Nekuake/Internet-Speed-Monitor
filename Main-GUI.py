@@ -34,7 +34,7 @@ try:
     insertstyle.set_theme("black")
     mainwindow.configure(bg="#414244")
 except:
-    messagebox.showinfo("TTKthemes not installed. Run python -m pip install ttkthemes. Using default theme")
+    messagebox.showinfo("TTK ERROR","TTKthemes not installed. Run python -m pip install ttkthemes. Using default theme")
 
 kindoftestdown = IntVar()
 kindoftestup = IntVar()
