@@ -4,10 +4,12 @@ import threading
 from tkinter import *
 from tkinter.ttk import *
 from tkinter import messagebox
-from ttkthemes import ThemedStyle
+
 import os
 import speedtest
 import math
+
+
 print("Package found! Ready to run!")
 s = speedtest.Speedtest()  # Used
 
@@ -26,9 +28,14 @@ mainwindow.tk.call('tk', 'scaling', 1.7)
 mainwindow.geometry('800x120')
 mainwindow.title("Internet Speed Monitor")
 mainwindow.resizable(0,0)
-insertstyle = ThemedStyle(mainwindow)
-insertstyle.set_theme("black")
-mainwindow.configure(bg="#414244")
+try:
+    from ttkthemes import ThemedStyle
+    insertstyle = ThemedStyle(mainwindow)
+    insertstyle.set_theme("black")
+    mainwindow.configure(bg="#414244")
+except:
+    messagebox.showinfo("TTKthemes not installed. Run python -m pip install ttkthemes. Using default theme")
+
 kindoftestdown = IntVar()
 kindoftestup = IntVar()
 kindoftestping = IntVar()
