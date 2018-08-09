@@ -24,10 +24,6 @@ running=0
 
 
 mainwindow = Tk()
-mainwindow.tk.call('tk', 'scaling', 1.7)
-mainwindow.geometry('800x120')
-mainwindow.title("Internet Speed Monitor")
-mainwindow.resizable(0,0)
 try:
     from ttkthemes import ThemedStyle
     insertstyle = ThemedStyle(mainwindow)
@@ -35,6 +31,12 @@ try:
     mainwindow.configure(bg="#414244")
 except:
     messagebox.showinfo("TTK ERROR","TTKthemes not installed. Run python -m pip install ttkthemes. Using default theme")
+mainwindow.tk.call('tk', 'scaling', 1.7)
+mainwindow.geometry('800x120')
+mainwindow.title("Internet Speed Monitor")
+mainwindow.resizable(0,0)
+mainwindow.iconbitmap('internet.ico')
+
 
 kindoftestdown = IntVar()
 kindoftestup = IntVar()
