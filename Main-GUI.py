@@ -75,6 +75,8 @@ pinggui = Label(mainwindow, text="0 ms")
 pinggui.grid(row=4, column=4, sticky=SE)
 uploadgui = Label(mainwindow, text="0 MB/s")
 uploadgui.grid(row=5,column=4, sticky=SE)
+authorgui = Label(mainwindow, text="By Nekuake")
+authorgui.grid(row=6,column=4, sticky=SE)
 
 
 def closing():

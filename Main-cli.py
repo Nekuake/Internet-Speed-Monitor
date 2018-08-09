@@ -2,7 +2,7 @@
 import time
 import os
 import math
-
+print("Internet Speed Monitor is a program that tests the Internet Speed. Done by Nekuake")
 print("This script needs that you have installed previously the speedtest package.\n")
 print("Please, be sure that you have it first.\n")
 try:
