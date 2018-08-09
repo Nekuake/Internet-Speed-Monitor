@@ -35,7 +35,10 @@ mainwindow.tk.call('tk', 'scaling', 1.7)
 mainwindow.geometry('800x120')
 mainwindow.title("Internet Speed Monitor")
 mainwindow.resizable(0,0)
-mainwindow.iconbitmap('internet.ico')
+try:
+    mainwindow.iconbitmap('internet.ico')
+except:
+    print("WARNING: ICON NOT FOUND (executable?)")
 
 
 kindoftestdown = IntVar()
@@ -76,7 +79,7 @@ uploadgui.grid(row=5,column=4, sticky=SE)
 
 def closing():
     if running == 1:
-        messagebox.showinfo("Closing Internet Speed Monitor...", "Please, wait until the script closes... It's not frozen. Click OK to start the process of closing")
+        messagebox.showinfo("Closing Internet Speed Monitor...", "Please, wait until the script closes... It's not frozen. Click OK to start the process of closing. If it doesn't work, close the console window...")
     exit()
 
 mainwindow.protocol("WM_DELETE_WINDOW", closing)
