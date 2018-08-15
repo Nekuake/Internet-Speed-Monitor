@@ -1,6 +1,9 @@
 # Script done by Nekuake using Sivel's speedtest.
 import time
 import threading
+import errno
+
+
 from tkinter import *
 from tkinter.ttk import *
 from tkinter import messagebox
@@ -12,7 +15,7 @@ import math
 
 print("Package found! Ready to run!")
 s = speedtest.Speedtest()  # Used
-
+print("Creating variables...")
 download = 0
 upload = 0
 ping = 0
@@ -21,8 +24,13 @@ timessofar = 0
 attemps = 0
 timesdef = 0
 running=0
-
-
+try:
+    os.makedirs("Logs")
+    print("Folder created!!")
+except OSError as e:
+    if e.errno != errno.EEXIST:
+        raise
+print("Creating the window...")
 mainwindow = Tk()
 try:
     from ttkthemes import ThemedStyle
@@ -40,14 +48,14 @@ try:
 except:
     print("WARNING: ICON NOT FOUND (executable?)")
 
-
+print("Creating more variables...")
 kindoftestdown = IntVar()
 kindoftestup = IntVar()
 kindoftestping = IntVar()
 memorypreallocation = IntVar()
 deletefile= IntVar()
 infinitesting=IntVar()
-
+print("Creating the windgets...")
 guiinfinitesting = Checkbutton(mainwindow, text="Infinite", variable=infinitesting)
 guiinfinitesting.grid(row=3,column=4,sticky=W)
 guidownloadcheck = Checkbutton(mainwindow, text="Download", variable=kindoftestdown)
@@ -55,8 +63,6 @@ guidownloadcheck.grid(row=3, column=0, sticky=NW)
 guiuploadcheck = Checkbutton(mainwindow, text="Upload", variable=kindoftestup).grid(row=3, column=1, sticky=NW)
 guipingcheck = Checkbutton(mainwindow, text="Ping", variable=kindoftestping).grid(row=3, column=2, sticky=NW)
 guiprealloccheck = Checkbutton(mainwindow, text="Disable Mem. preallocation.", variable=memorypreallocation).grid(row=3, column=3, sticky=SW)
-if os.path.isfile("outputgui.txt"):
-    guideletefile = Checkbutton(mainwindow,text="Delete old file", variable=deletefile).grid(row=5,column = 1)
 Label(mainwindow, text="Nº of tests").grid(row=4, column=0, sticky=NW)
 
 status =Label(mainwindow, text="Waiting for input...")
@@ -110,10 +116,11 @@ def test():
     kindoftestdowndef = kindoftestdown.get()
     kindoftestupdef = kindoftestup.get()
     portion = (100/(timesdef*(kindoftestupdef+kindoftestdowndef+kindoftestpingdef)))
-    if deletefile.get() == 1:
-        os.remove("outputgui.txt")
+
     while timessofar <= timesdef:
-            f = open("outputgui.txt", "a")
+            dirname = os.path.dirname(__file__)
+            filename = os.path.join(dirname, "Logs/GUI_TEST_" + time.strftime("%Y-%m-%d_%H-%M-%S") + "_GUI.txt")
+            f = open(filename, "a")
             if timessofar == 1:
                 print("Getting best server...")
                 status.configure(text="Getting best server...")
@@ -173,7 +180,7 @@ def test():
 
     guirun.configure(state = NORMAL)
     running = 0
-    status.configure(text="Finished. Waiting for input... (check outputgui.txt)")
+    status.configure(text="Finished. Waiting for input... (check" + filename +")")
 
 
 testthread = [threading.Thread(target=test)]
