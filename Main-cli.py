@@ -82,7 +82,7 @@ while timessofar <= times:
         f.write("\nUpload Speed (" + str(timessofar) + "): " + str(upload) + "KB/s. " + str(upload / 1024) + "MB/s")
     print("TEST FINISHED...")
     timessofar = timessofar + 1
-    f.close
+    f.close()
 if times == 0:
     print("No tests will be executed...")
 else:

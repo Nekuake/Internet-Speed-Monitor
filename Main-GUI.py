@@ -175,7 +175,7 @@ def test():
                 globalprogressbar.step(portion)
 
             timessofar = timessofar + 1
-            f.close
+            f.close()
             timewaited = timeoutdef
 
     guirun.configure(state = NORMAL)
