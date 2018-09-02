@@ -38,16 +38,17 @@ except OSError as e:
 if timeout == 0:
     timeout = 1
     print("TIMEOUT MUST BE 1 SECOND AT LEAST...")
+dirname = os.path.dirname(__file__)
+filename= os.path.join(dirname, "Logs/CLI_TEST_" + time.strftime("%Y-%m-%d_%H-%M-%S")+"_CLI.txt")
 while timessofar <= times:
-    dirname = os.path.dirname(__file__)
-    filename= os.path.join(dirname, "Logs/CLI_TEST_" + time.strftime("%Y-%m-%d_%H-%M-%S")+"_CLI.txt")
     f = open(filename, "a")
     if timessofar == 1:
         print("DO NOT CLOSE THE WINDOW OR THE TEST WILL HALT!")
         print("Connecting to the closest server...")
         serverdata = (s.get_best_server())
         print("USING SERVER:" )
-        pp.pprint(serverdata)
+        for x, y in serverdata.items():
+            print(x, ": ", y)
         print('TEST RUN AT: ', time.strftime("%c") + " with serial " + str(times) + str(kindoftestup) + str(kindoftestdown) + str(testping) + str(timeout))
         f.write("\n" + "TEST RUN AT: " + time.strftime("%c") + "with serial" + str(times) + str(kindoftestup) + str(kindoftestdown) + str(testping) + str(timeout))
     else:
