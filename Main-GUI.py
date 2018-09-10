@@ -118,7 +118,14 @@ def test():
     kindoftestpingdef = kindoftestping.get()
     kindoftestdowndef = kindoftestdown.get()
     kindoftestupdef = kindoftestup.get()
-    portion = (100 / (timesdef * (kindoftestupdef + kindoftestdowndef + kindoftestpingdef)))
+    try:
+        portion = (100 / (timesdef * (kindoftestupdef + kindoftestdowndef + kindoftestpingdef)))
+    except ZeroDivisionError:
+        running = 0
+        guirun.configure(state=NORMAL)
+        messagebox.showerror("No tests selected", "At least one kind of test must be selected.")
+        status.configure(text="INPUT ERROR. Select one kind of test")
+        return
     dirname = os.path.dirname(__file__)
     filename = os.path.join(dirname, "Logs/GUI_TEST_" + time.strftime("%Y-%m-%d_%H-%M-%S") + "_GUI.txt")
 
