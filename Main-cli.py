@@ -4,6 +4,7 @@ import os
 import math
 import pprint
 import errno
+import json
 pp = pprint.PrettyPrinter(indent=4)
 print("Internet Speed Monitor is a program that tests the Internet Speed. Done by Nekuake")
 print("This script needs that you have installed previously the speedtest package.\n")
@@ -46,9 +47,11 @@ while timessofar <= times:
         print("DO NOT CLOSE THE WINDOW OR THE TEST WILL HALT!")
         print("Connecting to the closest server...")
         serverdata = (s.get_best_server())
+        f.write(json.dumps(serverdata))
         print("USING SERVER:" )
         for x, y in serverdata.items():
             print(x, ": ", y)
+        print (serverdata)
         print('TEST RUN AT: ', time.strftime("%c") + " with serial " + str(times) + str(kindoftestup) + str(kindoftestdown) + str(testping) + str(timeout))
         f.write("\n" + "TEST RUN AT: " + time.strftime("%c") + "with serial" + str(times) + str(kindoftestup) + str(kindoftestdown) + str(testping) + str(timeout))
     else:

@@ -2,15 +2,14 @@
 import time
 import threading
 import errno
-
+import json
 from tkinter import *
 from tkinter.ttk import *
 from tkinter import messagebox
-
 import os
 import speedtest
 import math
-
+#Keys:
 print("Package found! Ready to run!")
 s = speedtest.Speedtest()  # Used
 print("Creating variables...")
@@ -40,7 +39,7 @@ except:
     messagebox.showinfo("TTK ERROR",
                         "TTKthemes not installed. Run python -m pip install ttkthemes. Using default theme")
 mainwindow.tk.call('tk', 'scaling', 1.7)
-mainwindow.geometry('800x120')
+mainwindow.geometry('800x220')
 mainwindow.title("Internet Speed Monitor")
 mainwindow.resizable(0, 0)
 try:
@@ -65,6 +64,8 @@ guipingcheck = Checkbutton(mainwindow, text="Ping", variable=kindoftestping).gri
 guiprealloccheck = Checkbutton(mainwindow, text="Disable Mem. preallocation.", variable=memorypreallocation).grid(row=3,
                                                                                                                   column=3,
                                                                                                                   sticky=SW)
+CountryNameTkinter=Label(mainwindow, text="Country:")
+CountryNameTkinter.grid(row=7, column=0)
 Label(mainwindow, text="Nº of tests").grid(row=4, column=0, sticky=NW)
 
 status = Label(mainwindow, text="Waiting for input...")
@@ -118,10 +119,10 @@ def test():
     kindoftestdowndef = kindoftestdown.get()
     kindoftestupdef = kindoftestup.get()
     portion = (100 / (timesdef * (kindoftestupdef + kindoftestdowndef + kindoftestpingdef)))
+    dirname = os.path.dirname(__file__)
+    filename = os.path.join(dirname, "Logs/GUI_TEST_" + time.strftime("%Y-%m-%d_%H-%M-%S") + "_GUI.txt")
 
     while timessofar <= timesdef:
-        dirname = os.path.dirname(__file__)
-        filename = os.path.join(dirname, "Logs/GUI_TEST_" + time.strftime("%Y-%m-%d_%H-%M-%S") + "_GUI.txt")
         f = open(filename, "a")
         if timessofar == 1:
             print("Getting best server...")
