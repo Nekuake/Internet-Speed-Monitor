@@ -1,5 +1,4 @@
 # Script done by Nekuake using Sivel's speedtest.
-print("Importing modules...")
 import threading
 import time
 import errno
@@ -47,7 +46,7 @@ except:
                         "TTKthemes not installed. Run python -m pip install ttkthemes. Using default theme")
 mainwindow.tk.call('tk', 'scaling', 2)
 mainwindow.geometry('400x600')
-mainwindow.title("Internet Speed Monitor")
+mainwindow.title("Internet Speed Monitor by Nekuake running in " + os.path.dirname(__file__))
 mainwindow.resizable(0, 0)
 try:
     mainwindow.iconbitmap('internet.ico')
@@ -79,6 +78,10 @@ uploadgui = Label(mainwindow, text="0 MB/s")
 authorgui = Label(mainwindow, text="By Nekuake")
 globalprogressbar = Progressbar(mainwindow, length=100, mode='determinate', maximum=100)
 waitprogressbar = Progressbar(mainwindow, length=100, mode='determinate', maximum=100)
+guiservercountry=Label(mainwindow, text="Country")
+guiserversponsor=Label(mainwindow, text="Sponsor")
+guiservername=Label(mainwindow, text="Name")
+testfilename=Label(mainwindow, text="Output file", font=("8"))
 
 guiinfinitesting.place(x=110, y=180)
 guidownloadcheck.place(x=10, y=5)
@@ -86,7 +89,7 @@ guiuploadcheck.place(x=10, y=60)
 guinumberoftests.place(x=150,y=5)
 guipingcheck.place(x=10, y=180)
 guiprealloccheck.place(x=10, y=120)
-status.place(x=10, y=230)
+status.place(x=5, y=230)
 times.place(x=270, y=5)
 guitextseconds.place(x=168,y=60)
 timeout.place(x=270,y=60)
@@ -96,7 +99,9 @@ uploadgui.place(x=400,y=460, anchor=NE)
 authorgui.place(x=140, y= 570)
 globalprogressbar.place(width=400, height=10, y=220)
 waitprogressbar.place(width=400, height=10, y=260)
-
+guiservername.place(x=10, y=300)
+guiservercountry.place(x=10, y=370)
+testfilename.place(x=10, y=490)
 
 def closing():
     if running == 1:
@@ -113,7 +118,9 @@ mainwindow.protocol("WM_DELETE_WINDOW", closing)
 
 
 def test():
-    global guirun, mainwindow, testthread, uploadgui, downloadgui, pinggui, timesdef, globalprogressbar, status, running, globalprogressbar, infinitesting, waitprogressbar, systemrunning
+    global guirun, mainwindow, testthread, uploadgui, downloadgui, pinggui, timesdef, globalprogressbar, status, running,\
+        globalprogressbar, infinitesting, waitprogressbar, systemrunning, testfilename, guiserversponsor,\
+        guiservercountry, guiservername
     print("Starting test function...")
     status.configure(text="Starting test function...")
     print(infinitesting)
@@ -136,18 +143,27 @@ def test():
         running = 0
         guirun.configure(state=NORMAL)
         if systemrunning == "Windows":
+            print("Error on Windows. Playing sound.")
             winsound.PlaySound("SystemHand",winsound.SND_ASYNC)
         status.configure(text="INPUT ERROR. Select one kind of test")
         return
     dirname = os.path.dirname(__file__)
     filename = os.path.join(dirname, "Logs/GUI_TEST_" + time.strftime("%Y-%m-%d_%H-%M-%S") + "_GUI.txt")
+    testfilename.configure(text=filename)
 
     while timessofar <= timesdef:
         f = open(filename, "a")
         if timessofar == 1:
             print("Getting best server...")
             status.configure(text="Getting best server...")
-            s.get_best_server()
+            serverdata=s.get_best_server()
+            servercountry=serverdata["country"]
+            serversponsor=serverdata["sponsor"]
+            servername=serverdata["name"]
+            serverurl=serverdata["url"]
+            guiservername.configure(text=servername)
+            guiservercountry.configure(text=servercountry)
+            guiserversponsor.configure(text=serversponsor)
             print("Best server acquired!")
             print(
                 "\n" + "TEST RUN AT: " + time.strftime("%c") + "with serial" + str(timesdef) + str(
@@ -207,7 +223,7 @@ def test():
 
     guirun.configure(state=NORMAL)
     running = 0
-    status.configure(text="Finished. Waiting for input... (check" + filename + ")")
+    status.configure(text="Finished. Check" + filename + ")", font="8")
 
 
 testthread = [threading.Thread(target=test)]
