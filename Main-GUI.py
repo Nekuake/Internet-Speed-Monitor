@@ -45,7 +45,7 @@ except:
     messagebox.showinfo("TTK ERROR",
                         "TTKthemes not installed. Run python -m pip install ttkthemes. Using default theme")
 mainwindow.tk.call('tk', 'scaling', 2)
-mainwindow.geometry('400x600')
+mainwindow.geometry('400x500')
 mainwindow.title("Internet Speed Monitor by Nekuake running in " + os.path.dirname(__file__))
 mainwindow.resizable(0, 0)
 try:
@@ -81,7 +81,6 @@ waitprogressbar = Progressbar(mainwindow, length=100, mode='determinate', maximu
 guiservercountry=Label(mainwindow, text="Country")
 guiserversponsor=Label(mainwindow, text="Sponsor")
 guiservername=Label(mainwindow, text="Name")
-testfilename=Label(mainwindow, text="Output file", font=("5"))
 
 guidownloadcheck.place(x=10, y=5)
 guiuploadcheck.place(x=10, y=60)
@@ -92,15 +91,15 @@ status.place(x=5, y=230)
 times.place(x=270, y=5)
 guitextseconds.place(x=168,y=60)
 timeout.place(x=270,y=60)
-downloadgui.place(x=400, y=400, anchor=NE)
-pinggui.place(x=400,y=520, anchor=NE)
-uploadgui.place(x=400,y=460, anchor=NE)
-authorgui.place(x=140, y= 570)
+downloadgui.place(x=400, y=300, anchor=NE)
+pinggui.place(x=400,y=430, anchor=NE)
+uploadgui.place(x=400,y=360, anchor=NE)
+authorgui.place(x=140, y= 470)
 globalprogressbar.place(width=400, height=10, y=220)
 waitprogressbar.place(width=400, height=10, y=260)
-guiservername.place(x=10, y=300)
-guiservercountry.place(x=10, y=370)
-testfilename.place(x=10, y=490)
+guiservername.place(x=10, y=270)
+guiservercountry.place(x=10, y=330)
+guiserversponsor.place(x=10, y=400)
 
 def closing():
     if running == 1:
@@ -119,7 +118,16 @@ mainwindow.protocol("WM_DELETE_WINDOW", closing)
 def test():
     global guirun, mainwindow, testthread, uploadgui, downloadgui, pinggui, timesdef, globalprogressbar, status, running,\
         globalprogressbar, infinitesting, waitprogressbar, systemrunning, testfilename, guiserversponsor,\
-        guiservercountry, guiservername
+        guiservercountry, guiservername, guidownloadcheck, guiuploadcheck, guinumberoftests, guipingcheck, guiprealloccheck,\
+        guiinfinitesting, guitextseconds, timeout, times
+    guidownloadcheck.configure(state=DISABLED)
+    guiuploadcheck.configure(state=DISABLED)
+    guinumberoftests.configure(state=DISABLED)
+    guipingcheck.configure(state=DISABLED)
+    guiprealloccheck.configure(state=DISABLED)
+    guiinfinitesting.configure(state=DISABLED)
+    guitextseconds.configure(state=DISABLED)
+    timeout.configure(state=DISABLED)
     print("Starting test function...")
     status.configure(text="Starting test function...")
     print(infinitesting)
@@ -148,7 +156,6 @@ def test():
         return
     dirname = os.path.dirname(__file__)
     filename = os.path.join(dirname, "Logs/GUI_TEST_" + time.strftime("%Y-%m-%d_%H-%M-%S") + "_GUI.txt")
-    testfilename.configure(text=filename)
 
     while timessofar <= timesdef:
         f = open(filename, "a")
@@ -221,8 +228,17 @@ def test():
         timewaited = timeoutdef
 
     guirun.configure(state=NORMAL)
+    guidownloadcheck.configure(state=NORMAL)
+    guiuploadcheck.configure(state=NORMAL)
+    guinumberoftests.configure(state=NORMAL)
+    guipingcheck.configure(state=NORMAL)
+    guiprealloccheck.configure(state=NORMAL)
+    guiinfinitesting.configure(state=NORMAL)
+    guitextseconds.configure(state=NORMAL)
+    timeout.configure(state=NORMAL)
+    guirun.configure(state=NORMAL)
     running = 0
-    status.configure(text="Finished. Check" + filename + ")")
+    status.configure(text="Finished. Waiting for input...")
 
 
 testthread = [threading.Thread(target=test)]
@@ -247,8 +263,9 @@ def disable_spinbox():
         times.configure(state=NORMAL)
         print("STATE=ENABLED")
 
+
 guirun = Button(mainwindow, text="Run", command=lambda: [init_thread(), guirun.configure(state=DISABLED)])
-guiinfinitesting = Checkbutton(mainwindow, text="Infinite", variable=infinitesting, command= disable_spinbox)
+guiinfinitesting = Checkbutton(mainwindow, text="Infinite", variable=infinitesting,  command= disable_spinbox)
 guirun.place(x=208 , y=180, width = 180)
 guiinfinitesting.place(x=110, y=180)
 
