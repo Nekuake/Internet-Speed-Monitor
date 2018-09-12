@@ -11,7 +11,8 @@ from tkinter import messagebox
 import os
 import speedtest
 import math
-systemrunning=platform.system
+systemrunning=platform.system()
+print (systemrunning)
 if systemrunning == "Windows":
     import winsound
 # Keys: name, sponsor, country, url
@@ -134,7 +135,7 @@ def test():
     except ZeroDivisionError:
         running = 0
         guirun.configure(state=NORMAL)
-        if systemrunning() == "Windows":
+        if systemrunning == "Windows":
             winsound.PlaySound("SystemHand",winsound.SND_ASYNC)
         status.configure(text="INPUT ERROR. Select one kind of test")
         return
