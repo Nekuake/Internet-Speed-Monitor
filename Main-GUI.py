@@ -1,7 +1,9 @@
 # Script done by Nekuake using Sivel's speedtest.
-import time
+print("Importing modules...")
 import threading
+import time
 import errno
+import platform
 import json
 from tkinter import *
 from tkinter.ttk import *
@@ -9,7 +11,11 @@ from tkinter import messagebox
 import os
 import speedtest
 import math
-#Keys:
+systemrunning=platform.system
+if systemrunning == "Windows":
+    import winsound
+# Keys: name, sponsor, country, url
+
 print("Package found! Ready to run!")
 s = speedtest.Speedtest()  # Used
 print("Creating variables...")
@@ -38,8 +44,8 @@ try:
 except:
     messagebox.showinfo("TTK ERROR",
                         "TTKthemes not installed. Run python -m pip install ttkthemes. Using default theme")
-mainwindow.tk.call('tk', 'scaling', 1.7)
-mainwindow.geometry('800x220')
+mainwindow.tk.call('tk', 'scaling', 2)
+mainwindow.geometry('400x600')
 mainwindow.title("Internet Speed Monitor")
 mainwindow.resizable(0, 0)
 try:
@@ -54,37 +60,41 @@ kindoftestping = IntVar()
 memorypreallocation = IntVar()
 deletefile = IntVar()
 infinitesting = IntVar()
-print("Creating the windgets...")
+
+print("Creating the widgets...")
 guiinfinitesting = Checkbutton(mainwindow, text="Infinite", variable=infinitesting)
-guiinfinitesting.grid(row=3, column=4, sticky=W)
 guidownloadcheck = Checkbutton(mainwindow, text="Download", variable=kindoftestdown)
-guidownloadcheck.grid(row=3, column=0, sticky=NW)
-guiuploadcheck = Checkbutton(mainwindow, text="Upload", variable=kindoftestup).grid(row=3, column=1, sticky=NW)
-guipingcheck = Checkbutton(mainwindow, text="Ping", variable=kindoftestping).grid(row=3, column=2, sticky=NW)
-guiprealloccheck = Checkbutton(mainwindow, text="Disable Mem. preallocation.", variable=memorypreallocation).grid(row=3,
-                                                                                                                  column=3,
-                                                                                                                  sticky=SW)
-CountryNameTkinter=Label(mainwindow, text="Country:")
-CountryNameTkinter.grid(row=7, column=0)
-Label(mainwindow, text="Nº of tests").grid(row=4, column=0, sticky=NW)
-
+guiuploadcheck = Checkbutton(mainwindow, text="Upload", variable=kindoftestup)
+guipingcheck = Checkbutton(mainwindow, text="Ping", variable=kindoftestping)
+guiprealloccheck = Checkbutton(mainwindow, text="Disable Mem. preallocation.", variable=memorypreallocation)
+guinumberoftests = Label(mainwindow, text="Nº of tests")
 status = Label(mainwindow, text="Waiting for input...")
-status.grid(row=6, column=0, sticky=NW, columnspan=5)
-
 times = Spinbox(mainwindow, width=10, from_=1, to=9999, state='readonly')
-times.grid(row=4, column=1, sticky=NW)
-Label(mainwindow, text="Seconds").grid(row=4, column=2, sticky=NW)
+guitextseconds=Label(mainwindow, text="Seconds")
 timeout = Spinbox(mainwindow, width=10, from_=1, to=9999, state='readonly')
-timeout.grid(row=4, column=3, sticky=NW)
 downloadgui = Label(mainwindow, text="0 MB/s")
-downloadgui.grid(row=3, column=4, sticky=SE)
-mainwindow.grid_columnconfigure(4, pad=4, minsize=200)
 pinggui = Label(mainwindow, text="0 ms")
-pinggui.grid(row=4, column=4, sticky=SE)
 uploadgui = Label(mainwindow, text="0 MB/s")
-uploadgui.grid(row=5, column=4, sticky=SE)
 authorgui = Label(mainwindow, text="By Nekuake")
-authorgui.grid(row=6, column=4, sticky=SE)
+globalprogressbar = Progressbar(mainwindow, length=100, mode='determinate', maximum=100)
+waitprogressbar = Progressbar(mainwindow, length=100, mode='determinate', maximum=100)
+
+guiinfinitesting.place(x=110, y=180)
+guidownloadcheck.place(x=10, y=5)
+guiuploadcheck.place(x=10, y=60)
+guinumberoftests.place(x=150,y=5)
+guipingcheck.place(x=10, y=180)
+guiprealloccheck.place(x=10, y=120)
+status.place(x=10, y=230)
+times.place(x=270, y=5)
+guitextseconds.place(x=168,y=60)
+timeout.place(x=270,y=60)
+downloadgui.place(x=400, y=400, anchor=NE)
+pinggui.place(x=400,y=520, anchor=NE)
+uploadgui.place(x=400,y=460, anchor=NE)
+authorgui.place(x=140, y= 570)
+globalprogressbar.place(width=400, height=10, y=220)
+waitprogressbar.place(width=400, height=10, y=260)
 
 
 def closing():
@@ -96,13 +106,13 @@ def closing():
 
 mainwindow.protocol("WM_DELETE_WINDOW", closing)
 
-globalprogressbar = Progressbar(mainwindow, length=100, mode='determinate', maximum=100)
-globalprogressbar.grid(row=6, column=0, columnspan=2)
-globalprogressbar.place(width=800, height=9, y=111)
+
+
+
 
 
 def test():
-    global guirun, mainwindow, testthread, uploadgui, downloadgui, pinggui, timesdef, globalprogressbar, status, running, globalprogressbar, infinitesting
+    global guirun, mainwindow, testthread, uploadgui, downloadgui, pinggui, timesdef, globalprogressbar, status, running, globalprogressbar, infinitesting, waitprogressbar, systemrunning
     print("Starting test function...")
     status.configure(text="Starting test function...")
     print(infinitesting)
@@ -118,12 +128,14 @@ def test():
     kindoftestpingdef = kindoftestping.get()
     kindoftestdowndef = kindoftestdown.get()
     kindoftestupdef = kindoftestup.get()
+    waitportion=(100/timeoutdef)
     try:
         portion = (100 / (timesdef * (kindoftestupdef + kindoftestdowndef + kindoftestpingdef)))
     except ZeroDivisionError:
         running = 0
         guirun.configure(state=NORMAL)
-        messagebox.showerror("No tests selected", "At least one kind of test must be selected.")
+        if systemrunning() == "Windows":
+            winsound.PlaySound("SystemHand",winsound.SND_ASYNC)
         status.configure(text="INPUT ERROR. Select one kind of test")
         return
     dirname = os.path.dirname(__file__)
@@ -147,6 +159,7 @@ def test():
             print("Waiting", str(timeoutdef), " seconds...")
             while timewaited != 0:
                 time.sleep(1)
+                waitprogressbar.step(waitportion)
                 timewaited = timewaited - 1
                 status.configure(
                     text="Waiting " + str(timewaited) + " seconds...(" + str(timessofar) + "/" + str(timesdef) + ")")
@@ -164,6 +177,7 @@ def test():
                 download / 1024) + "MB/s")
             downloadgui.configure(text="Download Speed: " + str(download) + " KB/s.")
             globalprogressbar.step(portion)
+
 
         if kindoftestpingdef == 1:
             status.configure(text="Testing ping...(" + str(timessofar) + "/" + str(timesdef) + ")")
@@ -206,5 +220,6 @@ def init_thread():
 
 
 guirun = Button(mainwindow, text="Run", command=lambda: [init_thread(), guirun.configure(state=DISABLED)])
-guirun.grid(row=5, column=0, sticky=NW)
+guirun.place(x=208 , y=180, width = 180)
+print("Displaying window...")
 mainwindow.mainloop()
