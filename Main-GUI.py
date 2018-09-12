@@ -62,7 +62,7 @@ deletefile = IntVar()
 infinitesting = IntVar()
 
 print("Creating the widgets...")
-guiinfinitesting = Checkbutton(mainwindow, text="Infinite", variable=infinitesting)
+
 guidownloadcheck = Checkbutton(mainwindow, text="Download", variable=kindoftestdown)
 guiuploadcheck = Checkbutton(mainwindow, text="Upload", variable=kindoftestup)
 guipingcheck = Checkbutton(mainwindow, text="Ping", variable=kindoftestping)
@@ -81,9 +81,8 @@ waitprogressbar = Progressbar(mainwindow, length=100, mode='determinate', maximu
 guiservercountry=Label(mainwindow, text="Country")
 guiserversponsor=Label(mainwindow, text="Sponsor")
 guiservername=Label(mainwindow, text="Name")
-testfilename=Label(mainwindow, text="Output file", font=("8"))
+testfilename=Label(mainwindow, text="Output file", font=("5"))
 
-guiinfinitesting.place(x=110, y=180)
 guidownloadcheck.place(x=10, y=5)
 guiuploadcheck.place(x=10, y=60)
 guinumberoftests.place(x=150,y=5)
@@ -223,7 +222,7 @@ def test():
 
     guirun.configure(state=NORMAL)
     running = 0
-    status.configure(text="Finished. Check" + filename + ")", font="8")
+    status.configure(text="Finished. Check" + filename + ")")
 
 
 testthread = [threading.Thread(target=test)]
@@ -236,7 +235,22 @@ def init_thread():
     testthread[attemps].start()
 
 
+def disable_spinbox():
+    global infinitesting, guinumberoftests, times
+    infinitcheck=infinitesting.get()
+    if infinitcheck == 1:
+        guinumberoftests.configure(state=DISABLED)
+        times.configure(state=DISABLED)
+        print("STATE=DISABLED")
+    else:
+        guinumberoftests.configure(state=NORMAL)
+        times.configure(state=NORMAL)
+        print("STATE=ENABLED")
+
 guirun = Button(mainwindow, text="Run", command=lambda: [init_thread(), guirun.configure(state=DISABLED)])
+guiinfinitesting = Checkbutton(mainwindow, text="Infinite", variable=infinitesting, command= disable_spinbox)
 guirun.place(x=208 , y=180, width = 180)
+guiinfinitesting.place(x=110, y=180)
+
 print("Displaying window...")
 mainwindow.mainloop()
