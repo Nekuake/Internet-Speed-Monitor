@@ -27,14 +27,23 @@ timessofar = 0
 attemps = 0
 timesdef = 0
 running = 0
+
+
 try:
     os.makedirs("Logs")
     print("Folder created!!")
 except OSError as e:
     if e.errno != errno.EEXIST:
         raise
+
 print("Creating the window...")
 mainwindow = Tk()
+kindoftestdown = IntVar()
+kindoftestup = IntVar()
+kindoftestping = IntVar()
+memorypreallocation = IntVar()
+deletefile = IntVar()
+infinitesting = IntVar()
 try:
     from ttkthemes import ThemedStyle
 
@@ -53,13 +62,6 @@ try:
 except:
     print("WARNING: ICON NOT FOUND (executable?)")
 
-print("Creating more variables...")
-kindoftestdown = IntVar()
-kindoftestup = IntVar()
-kindoftestping = IntVar()
-memorypreallocation = IntVar()
-deletefile = IntVar()
-infinitesting = IntVar()
 
 print("Creating the widgets...")
 
@@ -128,6 +130,7 @@ def test():
     guiinfinitesting.configure(state=DISABLED)
     guitextseconds.configure(state=DISABLED)
     timeout.configure(state=DISABLED)
+    times.configure(state=DISABLED)
     print("Starting test function...")
     status.configure(text="Starting test function...")
     print(infinitesting)
@@ -237,6 +240,7 @@ def test():
     guitextseconds.configure(state=NORMAL)
     timeout.configure(state=NORMAL)
     guirun.configure(state=NORMAL)
+    times.configure(state=NORMAL)
     running = 0
     status.configure(text="Finished. Waiting for input...")
 
