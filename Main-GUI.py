@@ -1,10 +1,20 @@
 # Script done by Nekuake using Sivel's speedtest.
-import threading
+
+from tkinter import *
+
+booted= 0
+loadingwindow=Tk()
+loadingwindow.geometry("100x40")
+loadingwindow.title("Loading Internet Speed Monitor")
+guiloadingwindowlabel=Label(loadingwindow, text="Loading program...")
+guiloadingwindowlabel.place(x=0, y=0)
+loadingwindow.update()
+print("Booting...")
+
 import time
 import errno
 import platform
-import json
-from tkinter import *
+import threading
 from tkinter.ttk import *
 from tkinter import messagebox
 import os
@@ -283,4 +293,6 @@ guirun.place(x=208 , y=180, width = 180)
 guiinfinitesting.place(x=110, y=180)
 
 print("Displaying window...")
+loadingwindow.withdraw()
+mainwindow.deiconify()
 mainwindow.mainloop()
