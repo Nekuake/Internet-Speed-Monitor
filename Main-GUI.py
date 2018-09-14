@@ -11,6 +11,7 @@ import os
 import speedtest
 import math
 import glob
+from tkinter import ttk
 systemrunning=platform.system()
 print (systemrunning)
 if systemrunning == "Windows":
@@ -45,15 +46,13 @@ kindoftestping = IntVar()
 memorypreallocation = IntVar()
 deletefile = IntVar()
 infinitesting = IntVar()
-try:
-    from ttkthemes import ThemedStyle
+s = ttk.Style()
+s.theme_names()
+s.theme_use('vista')
+#Style
 
-    insertstyle = ThemedStyle(mainwindow)
-    insertstyle.set_theme("black")
-    mainwindow.configure(bg="#414244")
-except:
-    messagebox.showinfo("TTK ERROR",
-                        "TTKthemes not installed. Run python -m pip install ttkthemes. Using default theme")
+
+
 mainwindow.tk.call('tk', 'scaling', 2)
 mainwindow.geometry('400x500')
 mainwindow.title("Internet Speed Monitor by Nekuake running in " + os.path.dirname(__file__))
@@ -108,7 +107,7 @@ def closing():
     if running == 1:
         messagebox.showinfo("Closing Internet Speed Monitor...",
                             "Please, wait until the script closes... It's not frozen. Click OK to start the process of closing. If it doesn't work, close the console window...")
-    exit()
+    sys.exit(0)
 
 
 mainwindow.protocol("WM_DELETE_WINDOW", closing)
@@ -239,9 +238,9 @@ def test():
     guiprealloccheck.configure(state=NORMAL)
     guiinfinitesting.configure(state=NORMAL)
     guitextseconds.configure(state=NORMAL)
-    timeout.configure(state=NORMAL)
+    timeout.configure(state="readonly")
     guirun.configure(state=NORMAL)
-    times.configure(state=NORMAL)
+    times.configure(state="readonly")
     running = 0
     status.configure(text="Finished. Waiting for input...")
 
@@ -265,7 +264,7 @@ def disable_spinbox():
         print("STATE=DISABLED")
     else:
         guinumberoftests.configure(state=NORMAL)
-        times.configure(state=NORMAL)
+        times.configure(state="readonly")
         print("STATE=ENABLED")
 
 def log_explorer():
