@@ -10,6 +10,7 @@ from tkinter import messagebox
 import os
 import speedtest
 import math
+import glob
 systemrunning=platform.system()
 print (systemrunning)
 if systemrunning == "Windows":
@@ -158,7 +159,7 @@ def test():
         status.configure(text="INPUT ERROR. Select one kind of test")
         return
     dirname = os.path.dirname(__file__)
-    filename = os.path.join(dirname, "Logs/GUI_TEST_" + time.strftime("%Y-%m-%d_%H-%M-%S") + "_GUI.txt")
+    filename = os.path.join(dirname, "Logs/GUI_" + time.strftime("%Y-%m-%d_%H-%M-%S") + ".txt")
 
     while timessofar <= timesdef:
         f = open(filename, "a")
@@ -267,6 +268,15 @@ def disable_spinbox():
         times.configure(state=NORMAL)
         print("STATE=ENABLED")
 
+def log_explorer():
+    files = (glob.glob(os.path.dirname(__file__) + "/Logs/*.txt"))
+    for x in files:
+        print(x)
+
+
+
+logexplorerwindow = threading.Thread(target=log_explorer)
+logexplorerwindow.start()
 
 guirun = Button(mainwindow, text="Run", command=lambda: [init_thread(), guirun.configure(state=DISABLED)])
 guiinfinitesting = Checkbutton(mainwindow, text="Infinite", variable=infinitesting,  command= disable_spinbox)

@@ -40,7 +40,7 @@ if timeout == 0:
     timeout = 1
     print("TIMEOUT MUST BE 1 SECOND AT LEAST...")
 dirname = os.path.dirname(__file__)
-filename= os.path.join(dirname, "Logs/CLI_TEST_" + time.strftime("%Y-%m-%d_%H-%M-%S")+"_CLI.txt")
+filename= os.path.join(dirname, "Logs/CLI_" + time.strftime("%Y-%m-%d_%H-%M-%S")+".txt")
 while timessofar <= times:
     f = open(filename, "a")
     if timessofar == 1:
