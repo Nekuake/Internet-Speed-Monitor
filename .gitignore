@@ -18,3 +18,5 @@ build/Main-GUI/
 *.exe
 
 Logs/
+
+dist/
