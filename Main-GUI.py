@@ -1,16 +1,6 @@
 # Script done by Nekuake using Sivel's speedtest.
 
 from tkinter import *
-
-booted= 0
-loadingwindow=Tk()
-loadingwindow.geometry("100x40")
-loadingwindow.title("Loading Internet Speed Monitor")
-guiloadingwindowlabel=Label(loadingwindow, text="Loading program...")
-guiloadingwindowlabel.place(x=0, y=0)
-loadingwindow.update()
-print("Booting...")
-
 import time
 import errno
 import platform
@@ -22,6 +12,7 @@ import speedtest
 import math
 import glob
 from tkinter import ttk
+
 systemrunning=platform.system()
 print (systemrunning)
 if systemrunning == "Windows":
@@ -56,9 +47,7 @@ kindoftestping = IntVar()
 memorypreallocation = IntVar()
 deletefile = IntVar()
 infinitesting = IntVar()
-s = ttk.Style()
-s.theme_names()
-s.theme_use('vista')
+
 #Style
 
 
@@ -75,10 +64,14 @@ except:
 
 print("Creating the widgets...")
 
-guidownloadcheck = Checkbutton(mainwindow, text="Download", variable=kindoftestdown)
-guiuploadcheck = Checkbutton(mainwindow, text="Upload", variable=kindoftestup)
-guipingcheck = Checkbutton(mainwindow, text="Ping", variable=kindoftestping)
-guiprealloccheck = Checkbutton(mainwindow, text="Disable Mem. preallocation.", variable=memorypreallocation)
+guidownloadcheck = Checkbutton(mainwindow, variable=kindoftestdown)
+guiuploadcheck = Checkbutton(mainwindow, variable=kindoftestup)
+guipingcheck = Checkbutton(mainwindow, variable=kindoftestping)
+guiprealloccheck = Checkbutton(mainwindow, variable=memorypreallocation)
+guitextdowncheck = Label(mainwindow, text="Download")
+guitextupcheck = Label(mainwindow, text="Upload")
+guitextpingcheck = Label(mainwindow, text="Ping")
+guitextprealloxcheck = Label(mainwindow, text="Disable Mem. preallocation.")
 guinumberoftests = Label(mainwindow, text="Nº of tests")
 status = Label(mainwindow, text="Waiting for input...")
 times = Spinbox(mainwindow, width=10, from_=1, to=9999, state='readonly')
@@ -93,7 +86,10 @@ waitprogressbar = Progressbar(mainwindow, length=100, mode='determinate', maximu
 guiservercountry=Label(mainwindow, text="Country")
 guiserversponsor=Label(mainwindow, text="Sponsor")
 guiservername=Label(mainwindow, text="Name")
-
+guitextdowncheck.place(x=25, y=5)
+guitextupcheck.place(x=25, y=60)
+guitextpingcheck.place(x=25, y=180)
+guitextprealloxcheck.place(x=25, y=120)
 guidownloadcheck.place(x=10, y=5)
 guiuploadcheck.place(x=10, y=60)
 guinumberoftests.place(x=150,y=5)
@@ -288,11 +284,13 @@ logexplorerwindow = threading.Thread(target=log_explorer)
 logexplorerwindow.start()
 
 guirun = Button(mainwindow, text="Run", command=lambda: [init_thread(), guirun.configure(state=DISABLED)])
-guiinfinitesting = Checkbutton(mainwindow, text="Infinite", variable=infinitesting,  command= disable_spinbox)
+guiinfinitesting = Checkbutton(mainwindow, variable=infinitesting,  command= disable_spinbox)
+guitextinfinitesting = Label(mainwindow, text="Infinite")
 guirun.place(x=208 , y=180, width = 180)
 guiinfinitesting.place(x=110, y=180)
+guitextinfinitesting.place(x=125, y=180)
 
 print("Displaying window...")
-loadingwindow.withdraw()
+
 mainwindow.deiconify()
 mainwindow.mainloop()
